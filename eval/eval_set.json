@@ -1,0 +1,22 @@
+[
+  {"question": "How long is the half-time interval?", "gold_pages": [87]},
+  {"question": "What is the circumference of the ball?", "gold_pages": [51]},
+  {"question": "For which offences is a player sent off with a red card?", "gold_pages": [117, 118, 120]},
+  {"question": "How far is the penalty mark from the goal line?", "gold_pages": [44, 129]},
+  {"question": "What is the maximum number of substitutes allowed in official competitions?", "gold_pages": [55]},
+  {"question": "When is a player in an offside position?", "gold_pages": [103]},
+  {"question": "How high is the crossbar from the ground?", "gold_pages": [46, 47]},
+  {"question": "Where must the goalkeeper stand during a penalty kick?", "gold_pages": [129]},
+  {"question": "How long does a football match last?", "gold_pages": [87]},
+  {"question": "When does touching the ball with the hand count as a handball offence?", "gold_pages": [110, 111]},
+  {"question": "How far away must the defensive wall be from the ball at a free kick?", "gold_pages": [126, 200]},
+  {"question": "Are players allowed to wear jewellery?", "gold_pages": [63, 73]},
+  {"question": "How long are the periods of extra time?", "gold_pages": [97]},
+  {"question": "How many kicks does each team take in a penalty shoot-out?", "gold_pages": [100, 180]},
+  {"question": "What is the minimum number of players a team needs for the match to continue?", "gold_pages": [55]},
+  {"question": "What are the cautionable offences punished by a yellow card?", "gold_pages": [115, 116, 183]},
+  {"question": "What are the required dimensions of the field of play?", "gold_pages": [43, 44]},
+  {"question": "When is a goal scored?", "gold_pages": [97]},
+  {"question": "What is serious foul play?", "gold_pages": [114, 117, 118, 181]},
+  {"question": "How is a dropped ball taken and to whom is the ball dropped?", "gold_pages": [91, 92, 95]}
+]
