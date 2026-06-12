@@ -17,7 +17,7 @@ Ask anything about football rules in plain language — get answers grounded in 
 
 ---
 
-## 🚀 Run it on your machine (5 minutes, spoon-fed)
+## 🚀 Quick start — run it on your machine in 5 minutes
 
 ### Step 0 — What you need
 
