@@ -202,5 +202,13 @@ This project was built with substantial assistance from **Claude (Anthropic)**, 
 **⚽ Built for the NLP with LLMs final project · June 2026**
 
 [Live demo](https://fifa-rag.vercel.app) · [Report an issue](../../issues)
+---
+
+### 👥 Group Members
+* **Virginia Spolaore**
+* **Harish Bhavandla**
+* **Eren Yon**
+
+---
 
 </div>
