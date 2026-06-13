@@ -32,7 +32,7 @@ Ask anything about football rules in plain language — get answers grounded in 
 ### Step 1 — Clone and enter the project
 
 ```bash
-git clone https://github.com/harishbhavandla/fifa-rag-chatbot.git
+git clone https://github.com/harish885/fifa-rag-chatbot.git
 cd fifa-rag-chatbot
 ```
 
