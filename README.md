@@ -56,9 +56,10 @@ The document is **not authored by us**; rights remain with IFAB/FIFA. The source
 booklet's notice restricts reproduction, and we have **not** obtained permission.
 `data/chunks.json` is a **derived, preprocessed research artifact** for this
 educational project, not the official document, and confers no rights. The
-**source PDF is not committed**. To reproduce the corpus, download the official
-PDF and run ingestion yourself (see [Reproducibility](#-reproducibility)). Full
-details and the copyright notice are in [`data/source_metadata.json`](data/source_metadata.json).
+official PDF is included at [`data/Laws of the Game 2025_26_single pages.pdf`](data/)
+**solely for academic evaluation of this student project** (not a redistribution,
+no rights claimed). Full details and the copyright notice are in
+[`data/source_metadata.json`](data/source_metadata.json).
 
 ## 🏗️ Architecture
 
@@ -258,12 +259,11 @@ retrieval/annotation template, and the regression check
 **Needs `GROQ_API_KEY`:** answer generation (the live chat and
 `eval/evaluate_answers.py --generate`).
 
-**Regenerating the corpus needs the PDF:** the source PDF is **not** committed.
-Download it from the [official source](https://downloads.theifab.com/downloads/laws-of-the-game-2025-26-single-pages?l=en),
-then:
+**Regenerating the corpus:** the official PDF is included in `data/` (for academic
+review), so you can regenerate the chunks directly:
 
 ```bash
-python3 scripts/ingest.py "Laws of the Game 2025_26_single pages.pdf"
+python3 scripts/ingest.py "data/Laws of the Game 2025_26_single pages.pdf"
 ```
 
 This rewrites `data/chunks.json` (267 chunks; verify against the SHA-256 in
@@ -313,6 +313,7 @@ api/ui.html              ← chat frontend (bundled in the function)
 public/index.html        ← identical UI for static serving (kept in sync; tests/test_ui_sync.py)
 scripts/ingest.py        ← PDF → data/chunks.json (cleaning, sectioning, sentence-aware chunks)
 data/chunks.json         ← 267 page-tagged chunks (prebuilt artifact)
+data/Laws of the Game 2025_26_single pages.pdf  ← official source PDF (academic review only)
 data/source_metadata.json← corpus provenance, checksums, copyright notice
 eval/evaluate.py         ← Page Hit Rate@k + MRR, 6-system comparison → results.json
 eval/evaluate_answers.py ← answer-level harness + deterministic citation checks
