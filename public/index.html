@@ -3,69 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laws of the Game — RAG Chatbot (educational)</title>
+<title>Laws of the Game 2025/26 — RAG Chatbot (educational)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d1117; --panel: #161b22; --border: #30363d;
-    --text: #e6edf3; --muted: #8b949e; --accent: #2ea043; --user: #1f6feb;
-    --warn: #d29922; --err: #f85149;
+  /* ---------- theme tokens ---------- */
+  :root, [data-theme="dark"] {
+    --bg: #0a1410; --bg2: #0e1b15; --panel: #122019; --panel2: #16271e;
+    --border: #1f3a2c; --text: #e7f0ea; --muted: #8fa89a;
+    --pitch: #2d6a4f; --accent: #40c463; --accent-soft: #1d3a2a;
+    --user: #2d6a4f; --user-text: #f3fff8;
+    --warn: #e3a008; --err: #f0584b; --ok: #40c463;
+    --line: rgba(255,255,255,.06);
+  }
+  [data-theme="light"] {
+    --bg: #f4f8f5; --bg2: #eef4f0; --panel: #ffffff; --panel2: #f0f6f2;
+    --border: #d7e5dc; --text: #16241d; --muted: #5e7468;
+    --pitch: #2d6a4f; --accent: #2d6a4f; --accent-soft: #dff0e6;
+    --user: #2d6a4f; --user-text: #ffffff;
+    --warn: #b4690e; --err: #c0392b; --ok: #2d6a4f;
+    --line: rgba(0,0,0,.05);
   }
   * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
   body {
-    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
     background: var(--bg); color: var(--text);
     display: flex; flex-direction: column; height: 100dvh;
+    transition: background .25s, color .25s;
   }
+  /* ---------- header ---------- */
   header {
     padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 12px; z-index: 5;
   }
   header .ball { font-size: 22px; }
-  header h1 { font-size: 16px; font-weight: 600; }
-  header p { font-size: 12px; color: var(--muted); }
+  header h1 {
+    font-family: "Archivo", system-ui, sans-serif; font-size: 17px; font-weight: 800;
+    letter-spacing: -.2px;
+  }
+  header p { font-size: 12px; color: var(--muted); margin-top: 1px; }
   header .spacer { flex: 1; }
-  .gh-link { display: inline-flex; align-items: center; justify-content: center;
-    color: var(--muted); border: 1px solid var(--border); border-radius: 8px;
-    width: 34px; height: 34px; text-decoration: none; transition: color .15s, border-color .15s; }
-  .gh-link:hover { color: var(--text); border-color: var(--accent); }
-  .gh-link svg { width: 19px; height: 19px; display: block; }
-  #clear { background: transparent; border: 1px solid var(--border); color: var(--muted);
-    border-radius: 8px; padding: 6px 12px; font-size: 12.5px; cursor: pointer; }
-  #clear:hover { color: var(--text); border-color: var(--accent); }
-  .disclaimer { font-size: 11.5px; color: var(--muted); background: #11161d;
+  .icon-btn, .gh-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--muted); background: transparent; border: 1px solid var(--border);
+    border-radius: 9px; width: 36px; height: 36px; cursor: pointer; text-decoration: none;
+    transition: color .15s, border-color .15s, background .15s;
+  }
+  .icon-btn:hover, .gh-link:hover { color: var(--text); border-color: var(--accent); }
+  .icon-btn svg, .gh-link svg { width: 18px; height: 18px; display: block; }
+  #clear { width: auto; padding: 0 13px; font-size: 12.5px; font-weight: 600; gap: 6px; }
+  /* ---------- disclaimer ---------- */
+  .disclaimer { font-size: 11.5px; color: var(--muted); background: var(--bg2);
     border-bottom: 1px solid var(--border); padding: 7px 20px; }
-  #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-  .msg { max-width: 80%; padding: 12px 16px; border-radius: 14px; line-height: 1.5; font-size: 14.5px; white-space: pre-wrap; }
-  .user { align-self: flex-end; background: var(--user); border-bottom-right-radius: 4px; }
-  .bot  { align-self: flex-start; background: var(--panel); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
-  .bot.refusal { border-color: var(--warn); }
-  .bot.error { border-color: var(--err); }
-  .typing { color: var(--muted); font-style: italic; }
-  .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
-  .sources .badge { display: inline-block; background: #21262d; border-radius: 10px; padding: 2px 9px; margin: 2px 4px 0 0; }
-  .verify { margin-top: 8px; font-size: 11.5px; color: var(--muted); }
-  .suggest { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 10px; }
+  /* ---------- category + suggestion chips ---------- */
+  .cats { display: flex; gap: 8px; padding: 12px 20px 4px; flex-wrap: wrap; }
+  .cats button {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px; padding: 5px 13px; font-size: 12.5px; font-weight: 600;
+    cursor: pointer; transition: all .15s;
+  }
+  .cats button:hover { color: var(--text); }
+  .cats button.active { background: var(--pitch); color: #fff; border-color: var(--pitch); }
+  .suggest { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 20px 12px; }
   .suggest button {
-    background: var(--panel); border: 1px solid var(--border); color: var(--muted);
-    border-radius: 16px; padding: 6px 13px; font-size: 12.5px; cursor: pointer;
+    background: var(--panel2); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 12px; padding: 7px 13px; font-size: 12.5px; cursor: pointer;
+    transition: all .15s; animation: rise .35s ease both;
   }
   .suggest button:hover { color: var(--text); border-color: var(--accent); }
-  form { display: flex; gap: 10px; padding: 14px 20px; background: var(--panel); border-top: 1px solid var(--border); }
+  /* ---------- chat area + pitch watermark ---------- */
+  #chat {
+    flex: 1; overflow-y: auto; padding: 18px 20px 24px;
+    display: flex; flex-direction: column; gap: 16px; position: relative;
+  }
+  #chat::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image:
+      radial-gradient(circle at 50% 50%, transparent 78px, var(--line) 78px, var(--line) 80px, transparent 80px),
+      linear-gradient(var(--line), var(--line));
+    background-size: 100% 100%, 1px 100%;
+    background-position: center, center;
+    background-repeat: no-repeat;
+  }
+  .msg {
+    max-width: 80%; padding: 13px 16px; border-radius: 16px; line-height: 1.55;
+    font-size: 14.5px; white-space: pre-wrap; position: relative; z-index: 1;
+    animation: rise .32s cubic-bezier(.21,.9,.32,1) both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .user { align-self: flex-end; background: var(--user); color: var(--user-text);
+    border-bottom-right-radius: 5px; font-weight: 500; }
+  .bot  { align-self: flex-start; background: var(--panel); border: 1px solid var(--border);
+    border-bottom-left-radius: 5px; }
+  .bot.refusal { border-color: var(--warn); }
+  .bot.error { border-color: var(--err); }
+  /* status pill + VAR check */
+  .meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700;
+    letter-spacing: .3px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  .pill.grounded { background: var(--accent-soft); color: var(--ok); }
+  .pill.unverified { background: rgba(227,160,8,.14); color: var(--warn); }
+  .pill.refused { background: rgba(227,160,8,.14); color: var(--warn); }
+  .var-check { width: 18px; height: 18px; }
+  .var-check rect { fill: none; stroke: var(--ok); stroke-width: 1.5; }
+  .var-check path { fill: none; stroke: var(--ok); stroke-width: 2; stroke-linecap: round;
+    stroke-linejoin: round; stroke-dasharray: 16; stroke-dashoffset: 16;
+    animation: draw .5s .15s ease forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  /* inline citation pills */
+  .cite {
+    display: inline-block; background: var(--accent-soft); color: var(--ok);
+    font-size: 12px; font-weight: 600; padding: 0 7px; border-radius: 7px;
+    cursor: pointer; border: none; vertical-align: baseline; line-height: 1.5;
+  }
+  .cite:hover { filter: brightness(1.15); text-decoration: underline; }
+  /* sources + actions */
+  .sources { margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--muted); }
+  .sources .lbl { margin-right: 4px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; background: var(--panel2);
+    border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; margin: 3px 5px 0 0;
+    font-size: 12px; color: var(--text); cursor: pointer; transition: all .15s; }
+  .badge:hover { border-color: var(--accent); color: var(--accent); }
+  .verify { margin-top: 8px; font-size: 11px; color: var(--muted); }
+  .actions { display: flex; gap: 6px; margin-top: 10px; }
+  .actions button { background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 4px 9px; font-size: 11.5px; cursor: pointer; display: inline-flex;
+    gap: 5px; align-items: center; transition: all .15s; }
+  .actions button:hover { color: var(--text); border-color: var(--accent); }
+  .actions button.done { color: var(--ok); border-color: var(--ok); }
+  .actions svg { width: 13px; height: 13px; }
+  /* typing dots */
+  .typing-dots { display: inline-flex; gap: 5px; align-items: center; height: 18px; }
+  .typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted);
+    animation: blink 1.2s infinite ease-in-out; }
+  .typing-dots span:nth-child(2) { animation-delay: .2s; }
+  .typing-dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,80%,100% { opacity: .25; transform: scale(.8); } 40% { opacity: 1; transform: scale(1); } }
+  /* ---------- composer ---------- */
+  form { display: flex; gap: 10px; padding: 14px 20px; background: var(--panel);
+    border-top: 1px solid var(--border); }
+  .input-wrap { flex: 1; position: relative; display: flex; }
   input {
     flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text);
-    border-radius: 10px; padding: 12px 14px; font-size: 14.5px; outline: none;
+    border-radius: 12px; padding: 13px 58px 13px 15px; font-size: 14.5px; outline: none;
+    font-family: inherit; transition: border-color .15s;
   }
   input:focus { border-color: var(--accent); }
+  .kbd-hint { position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 10.5px; color: var(--muted); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1px 6px; pointer-events: none; }
   button[type=submit] {
-    background: var(--accent); color: #fff; border: none; border-radius: 10px;
-    padding: 0 22px; font-size: 14.5px; font-weight: 600; cursor: pointer;
+    background: var(--accent); color: #06140c; border: none; border-radius: 12px;
+    padding: 0 22px; font-size: 14.5px; font-weight: 700; cursor: pointer; transition: filter .15s;
   }
+  [data-theme="light"] button[type=submit] { color: #fff; }
+  button[type=submit]:hover { filter: brightness(1.06); }
   button[type=submit]:disabled { opacity: .5; cursor: default; }
+  /* ---------- citation drawer ---------- */
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0;
+    pointer-events: none; transition: opacity .25s; z-index: 20; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(420px, 92vw);
+    background: var(--panel); border-left: 1px solid var(--border); z-index: 21;
+    transform: translateX(100%); transition: transform .28s cubic-bezier(.21,.9,.32,1);
+    display: flex; flex-direction: column; }
+  .drawer.open { transform: none; }
+  .drawer header { background: var(--panel); }
+  .drawer .body { padding: 18px 20px; overflow-y: auto; }
+  .drawer h2 { font-family: "Archivo", sans-serif; font-size: 16px; }
+  .drawer .src-text { font-size: 13.5px; line-height: 1.6; color: var(--text);
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin-top: 12px; white-space: pre-wrap; }
+  .drawer .src-meta { font-size: 12px; color: var(--muted); margin-top: 10px; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 </style>
 </head>
-<body>
+<body data-theme="dark">
 <header>
   <span class="ball" aria-hidden="true">⚽</span>
   <div>
@@ -73,13 +190,17 @@
     <p>Educational RAG over the IFAB/FIFA rulebook · BM25 retrieval + Llama-3.1 on Groq</p>
   </div>
   <span class="spacer"></span>
+  <button class="icon-btn" id="theme" type="button" aria-label="Toggle light/dark theme" title="Toggle theme"></button>
   <a class="gh-link" href="https://github.com/harish885/fifa-rag-chatbot" target="_blank"
      rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub">
     <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
       <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
     </svg>
   </a>
-  <button id="clear" type="button" aria-label="Clear conversation">Clear</button>
+  <button class="icon-btn" id="clear" type="button" aria-label="Clear conversation" title="Clear (Esc)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+    Clear
+  </button>
 </header>
 
 <div class="disclaimer" role="note">
@@ -87,24 +208,38 @@
   Answers may be incomplete; always verify against the official Laws of the Game document.
 </div>
 
+<div class="cats" id="cats" role="tablist" aria-label="Topic categories"></div>
+<div class="suggest" id="suggest"></div>
+
 <div id="chat" aria-live="polite" aria-label="Conversation">
-  <div class="msg bot">Hi! Ask me anything about the FIFA Laws of the Game 2025/26 — offside, handball, penalties, VAR, equipment. Answers are grounded in the official PDF with page citations you can check.</div>
+  <div class="msg bot">Hi! Ask me anything about the FIFA Laws of the Game 2025/26 — offside, handball, penalties, VAR, equipment. Answers are grounded in the official PDF, with page citations you can open and check.</div>
 </div>
 
 <div class="sr-only" id="status" role="status" aria-live="assertive"></div>
 
-<div class="suggest" id="suggest">
-  <button type="button">What is the offside rule?</button>
-  <button type="button">When is a handball an offence?</button>
-  <button type="button">What is VAR?</button>
-  <button type="button">What are the dimensions of the goal?</button>
-</div>
-
 <form id="form">
-  <input id="input" placeholder="Ask about the Laws of the Game…" autocomplete="off" autofocus
-         aria-label="Your question">
+  <div class="input-wrap">
+    <input id="input" placeholder="Ask about the Laws of the Game…" autocomplete="off" autofocus aria-label="Your question">
+    <span class="kbd-hint" id="kbdhint">⌘K</span>
+  </div>
   <button type="submit" id="send">Send</button>
 </form>
+
+<!-- citation drawer -->
+<div class="drawer-backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Cited source">
+  <header>
+    <h2 id="drawer-title">Source</h2>
+    <span class="spacer"></span>
+    <button class="icon-btn" id="drawer-close" type="button" aria-label="Close source panel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </header>
+  <div class="body">
+    <div class="src-text" id="drawer-text"></div>
+    <div class="src-meta" id="drawer-meta"></div>
+  </div>
+</aside>
 
 <script>
 const chat = document.getElementById('chat');
@@ -116,67 +251,153 @@ const MAX_HISTORY = 12;
 let history = [];
 let busy = false;
 
-document.getElementById('suggest').addEventListener('click', e => {
-  if (e.target.tagName === 'BUTTON') { input.value = e.target.textContent; form.requestSubmit(); }
-});
-document.getElementById('clear').addEventListener('click', () => {
-  history = [];
-  chat.querySelectorAll('.msg').forEach((m, i) => { if (i > 0) m.remove(); });
-  setStatus('Conversation cleared.');
-  input.focus();
-});
-
-function setStatus(t) { statusRegion.textContent = t; }
-
-function addMessage(cls, text) {
-  const d = document.createElement('div');
-  d.className = 'msg ' + cls;
-  d.textContent = text;
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
-  return d;
+/* ---------- theme ---------- */
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+const themeBtn = document.getElementById('theme');
+function applyTheme(t) {
+  document.body.setAttribute('data-theme', t);
+  themeBtn.innerHTML = t === 'dark' ? SUN : MOON;
+  try { localStorage.setItem('theme', t); } catch (e) {}
 }
+let saved = 'dark';
+try { saved = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+applyTheme(saved);
+themeBtn.addEventListener('click', () =>
+  applyTheme(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
 
-function renderSources(container, sources) {
-  const wrap = document.createElement('div');
-  wrap.className = 'sources';
-  const label = document.createElement('span');
-  label.textContent = '📖 Sources: ';
-  wrap.appendChild(label);
-  sources.forEach(s => {
-    const b = document.createElement('span');
-    b.className = 'badge';
-    b.textContent = 'p. ' + s.page;        // page is a number from the server
-    wrap.appendChild(b);
+/* ---------- category + rotating suggestions ---------- */
+const CATEGORIES = {
+  'Offside': ['What is the offside rule?', 'What are the offside exceptions?', 'When is a player not penalised for offside?'],
+  'Fouls': ['When is a player shown a red card?', 'When is a handball an offence?', 'What is serious foul play?'],
+  'Restarts': ['How is a dropped ball taken?', 'How far must the wall be at a free kick?', 'How is a throw-in taken?'],
+  'Penalties': ['Where must the goalkeeper stand for a penalty?', 'How many kicks in a penalty shoot-out?'],
+  'VAR': ['What is VAR?', 'Which decisions can VAR review?'],
+  'Equipment': ['What are the dimensions of the goal?', 'Are players allowed to wear jewellery?', 'What is the circumference of the ball?']
+};
+const catsEl = document.getElementById('cats');
+const suggestEl = document.getElementById('suggest');
+function renderSuggestions(cat) {
+  suggestEl.innerHTML = '';
+  CATEGORIES[cat].forEach((q, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = q; b.style.animationDelay = (i * 40) + 'ms';
+    b.addEventListener('click', () => { input.value = q; form.requestSubmit(); });
+    suggestEl.appendChild(b);
   });
-  const note = document.createElement('div');
-  note.className = 'verify';
-  note.textContent = 'Verify these pages in the official document.';
-  wrap.appendChild(note);
-  container.appendChild(wrap);
+}
+Object.keys(CATEGORIES).forEach((cat, i) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = cat; b.setAttribute('role', 'tab');
+  if (i === 0) b.classList.add('active');
+  b.addEventListener('click', () => {
+    catsEl.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); renderSuggestions(cat);
+  });
+  catsEl.appendChild(b);
+});
+renderSuggestions('Offside');
+
+/* ---------- citation drawer ---------- */
+const drawer = document.getElementById('drawer');
+const backdrop = document.getElementById('backdrop');
+function openDrawer(page, sourcesByPage) {
+  const src = sourcesByPage[page];
+  document.getElementById('drawer-title').textContent = 'Source · page ' + page;
+  document.getElementById('drawer-text').textContent = src ? src.preview : 'No source text available for this page.';
+  document.getElementById('drawer-meta').textContent = src
+    ? 'Retrieved from the official Laws of the Game 2025/26, page ' + page + '. Verify against the official document.'
+    : '';
+  drawer.classList.add('open'); backdrop.classList.add('open'); drawer.setAttribute('aria-hidden', 'false');
+}
+function closeDrawer() { drawer.classList.remove('open'); backdrop.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+backdrop.addEventListener('click', closeDrawer);
+
+/* ---------- helpers ---------- */
+function setStatus(t) { statusRegion.textContent = t; }
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+const CITE_RE = /\[\s*p{1,2}\.?\s*\d+(?:\s*,\s*\d+)*\s*\]/gi;
+// Build a paragraph with inline clickable citation pills (DOM-safe).
+function renderAnswer(container, text, sourcesByPage) {
+  container.textContent = '';
+  let last = 0, m;
+  CITE_RE.lastIndex = 0;
+  while ((m = CITE_RE.exec(text)) !== null) {
+    if (m.index > last) container.appendChild(document.createTextNode(text.slice(last, m.index)));
+    const nums = (m[0].match(/\d+/g) || []).map(Number);
+    const pill = el('button', 'cite', m[0]);
+    pill.type = 'button';
+    pill.addEventListener('click', () => openDrawer(nums[0], sourcesByPage));
+    container.appendChild(pill);
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) container.appendChild(document.createTextNode(text.slice(last)));
 }
 
+const CHECK = '<svg class="var-check" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><path d="M8 10.5l2.5 2.5L16 8"/></svg>';
+function statusPill(status, grounded) {
+  const p = el('span', 'pill');
+  if (status === 'answered' && grounded) { p.className = 'pill grounded'; p.innerHTML = CHECK + '<span>Grounded</span>'; }
+  else if (status === 'answered') { p.className = 'pill unverified'; p.textContent = 'Unverified'; }
+  else if (status === 'out_of_scope') { p.className = 'pill refused'; p.textContent = 'Out of scope'; }
+  else { p.className = 'pill refused'; p.textContent = 'Insufficient context'; }
+  return p;
+}
+
+// typewriter reveal -> resolves when done
+function typeReveal(node, text) {
+  return new Promise(resolve => {
+    const step = Math.max(1, Math.ceil(text.length / 110));
+    let i = 0;
+    const tick = () => {
+      i = Math.min(text.length, i + step);
+      node.textContent = text.slice(0, i);
+      chat.scrollTop = chat.scrollHeight;
+      if (i < text.length) requestAnimationFrame(tick); else resolve();
+    };
+    tick();
+  });
+}
+
+function addActions(container, answerText) {
+  const row = el('div', 'actions');
+  const copy = el('button', null);
+  copy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span>';
+  copy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(answerText); copy.classList.add('done');
+      copy.querySelector('span').textContent = 'Copied'; setTimeout(() => { copy.classList.remove('done'); copy.querySelector('span').textContent = 'Copy'; }, 1500); } catch (e) {}
+  });
+  const up = el('button', null); up.innerHTML = '👍'; up.setAttribute('aria-label', 'Helpful');
+  const down = el('button', null); down.innerHTML = '👎'; down.setAttribute('aria-label', 'Not helpful');
+  function vote(btn) { [up, down].forEach(b => b.classList.remove('done')); btn.classList.add('done'); setStatus('Thanks for the feedback.'); }
+  up.addEventListener('click', () => vote(up));
+  down.addEventListener('click', () => vote(down));
+  row.append(copy, up, down);
+  container.appendChild(row);
+}
+
+/* ---------- send flow ---------- */
 form.addEventListener('submit', async e => {
   e.preventDefault();
-  if (busy) return;                         // prevent double submission
+  if (busy) return;
   const q = input.value.trim();
   if (!q) return;
-  busy = true; send.disabled = true;
-  input.value = '';
-  addMessage('user', q);
-  const pending = addMessage('bot typing', 'Consulting the rulebook…');
-  setStatus('Working…');
+  busy = true; send.disabled = true; input.value = '';
+  const u = el('div', 'msg user', q); chat.appendChild(u);
+  const pending = el('div', 'msg bot');
+  const dots = el('div', 'typing-dots'); dots.innerHTML = '<span></span><span></span><span></span>';
+  pending.appendChild(dots); chat.appendChild(pending);
+  chat.scrollTop = chat.scrollHeight; setStatus('Working…');
 
   try {
     const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: q, history })
     });
-
-    let data = null;
-    try { data = await r.json(); } catch { data = null; }
-    pending.classList.remove('typing');
+    let data = null; try { data = await r.json(); } catch { data = null; }
+    pending.textContent = '';
 
     if (!r.ok || !data) {
       pending.classList.add('error');
@@ -184,26 +405,57 @@ form.addEventListener('submit', async e => {
       setStatus('Error.');
     } else if (data.status === 'out_of_scope' || data.status === 'insufficient_context') {
       pending.classList.add('refusal');
-      pending.textContent = data.answer;     // no source badges on a refusal
+      const meta = el('div', 'meta-row'); meta.appendChild(statusPill(data.status, false));
+      pending.appendChild(meta);
+      const body = el('div'); pending.appendChild(body);
+      await typeReveal(body, data.answer);
       setStatus('No grounded answer.');
     } else {
-      pending.textContent = data.answer;
-      if (data.sources && data.sources.length) renderSources(pending, data.sources);
+      const meta = el('div', 'meta-row'); meta.appendChild(statusPill('answered', data.grounded));
+      pending.appendChild(meta);
+      const body = el('div'); pending.appendChild(body);
+      await typeReveal(body, data.answer);
+      // map page -> source for drawer + inline pills
+      const byPage = {}; (data.sources || []).forEach(s => { byPage[s.page] = s; });
+      renderAnswer(body, data.answer, byPage);
+      if (data.sources && data.sources.length) {
+        const s = el('div', 'sources');
+        s.appendChild(el('span', 'lbl', '📖 Sources:'));
+        data.sources.forEach(src => {
+          const b = el('button', 'badge', 'p. ' + src.page); b.type = 'button';
+          b.addEventListener('click', () => openDrawer(src.page, byPage));
+          s.appendChild(b);
+        });
+        s.appendChild(el('div', 'verify', 'Click a page to read the cited text. Verify against the official document.'));
+        pending.appendChild(s);
+      }
+      addActions(pending, data.answer);
       history.push({ role: 'user', content: q }, { role: 'assistant', content: data.answer });
       if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
       setStatus('Answered.');
     }
   } catch (err) {
-    pending.classList.remove('typing');
-    pending.classList.add('error');
+    pending.textContent = ''; pending.classList.add('error');
     pending.textContent = '⚠️ Request failed: ' + err.message;
     setStatus('Error.');
   } finally {
-    busy = false; send.disabled = false;     // always re-enable
-    chat.scrollTop = chat.scrollHeight;
-    input.focus();
+    busy = false; send.disabled = false; chat.scrollTop = chat.scrollHeight; input.focus();
   }
 });
+
+/* ---------- clear + keyboard shortcuts ---------- */
+function clearConversation() {
+  history = [];
+  chat.querySelectorAll('.msg').forEach((m, i) => { if (i > 0) m.remove(); });
+  setStatus('Conversation cleared.'); input.focus();
+}
+document.getElementById('clear').addEventListener('click', clearConversation);
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); input.focus(); }
+  else if (e.key === 'Escape') { if (drawer.classList.contains('open')) closeDrawer(); else clearConversation(); }
+});
+// show the right modifier hint
+document.getElementById('kbdhint').textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K';
 </script>
 </body>
 </html>

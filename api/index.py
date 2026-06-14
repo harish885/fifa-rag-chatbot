@@ -190,7 +190,7 @@ def finalize_response(parsed: dict, results, request_id: str) -> ChatResponse:
     for r in results:
         by_page.setdefault(r.page, r)
     sources = [
-        Source(page=p, preview=by_page[p].preview(), score=round(by_page[p].score, 2))
+        Source(page=p, preview=by_page[p].preview(420), score=round(by_page[p].score, 2))
         for p in supported if p in by_page
     ]
     # Grounded only when the answer cites at least one retrieved page.
