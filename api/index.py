@@ -12,6 +12,7 @@ No secrets are logged. Raw upstream bodies are never returned to clients.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -45,8 +46,11 @@ MAX_MESSAGE_CHARS = 1000
 MAX_HISTORY_MESSAGES = 12
 MAX_HISTORY_CONTENT_CHARS = 2000
 CONTEXT_TOP_K = 8  # chunks (distinct pages) handed to the generator
+CONTEXT_CHARS_PER_CHUNK = 700  # cap each chunk in the prompt to keep requests light
 GROQ_TIMEOUT_S = 25.0
-GROQ_MAX_RETRIES = 2  # transient errors only
+GROQ_MAX_RETRIES = 3  # transient errors only (timeout / 429 / 5xx)
+GROQ_BACKOFF_S = 1.2   # base backoff between retries
+GROQ_MAX_TOKENS = 600
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
@@ -140,6 +144,10 @@ class UpstreamMalformed(Exception):
     ...
 
 
+class UpstreamBusy(Exception):
+    """Rate-limited by the provider (HTTP 429) after retries."""
+
+
 # ----------------------------------------------------------- pure helpers (tested)
 def parse_model_output(content: str) -> dict:
     """Parse the model's JSON envelope, with a deterministic fallback.
@@ -227,7 +235,7 @@ async def _call_groq(messages: list) -> str:
         "model": MODEL,
         "messages": messages,
         "temperature": 0,
-        "max_tokens": 700,
+        "max_tokens": GROQ_MAX_TOKENS,
         "response_format": {"type": "json_object"},
     }
     last_exc: Optional[Exception] = None
@@ -250,10 +258,16 @@ async def _call_groq(messages: list) -> str:
                     raise UpstreamMalformed(type(e).__name__)
             if r.status_code in (401, 403):
                 raise ConfigError(f"Groq auth failed ({r.status_code})")
-            if 400 <= r.status_code < 500:
+            if r.status_code == 429:
+                last_exc = UpstreamBusy("rate limited (429)")  # transient -> retry
+            elif 400 <= r.status_code < 500:
                 raise UpstreamHTTPError(f"client error {r.status_code}")
-            last_exc = UpstreamHTTPError(f"server error {r.status_code}")  # retry 5xx
-        logger.warning("groq attempt %d failed: %s", attempt, type(last_exc).__name__)
+            else:
+                last_exc = UpstreamHTTPError(f"server error {r.status_code}")  # retry 5xx
+        logger.warning("groq attempt %d/%d failed: %s", attempt, GROQ_MAX_RETRIES,
+                       type(last_exc).__name__)
+        if attempt < GROQ_MAX_RETRIES:
+            await asyncio.sleep(GROQ_BACKOFF_S * attempt)  # linear backoff
     raise last_exc or UpstreamHTTPError("unknown upstream error")
 
 
@@ -276,7 +290,9 @@ async def chat(req: ChatRequest):
             request_id=request_id,
         )
 
-    context = "\n\n---\n\n".join(f"[Page {r.page}]\n{r.text}" for r in results)
+    context = "\n\n---\n\n".join(
+        f"[Page {r.page}]\n{r.text[:CONTEXT_CHARS_PER_CHUNK]}" for r in results
+    )
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for m in history:
         messages.append({"role": m["role"], "content": str(m["content"])[:MAX_HISTORY_CONTENT_CHARS]})
@@ -294,6 +310,11 @@ async def chat(req: ChatRequest):
         return JSONResponse(
             {"error": "The rules service timed out. Please try again.", "request_id": request_id},
             status_code=504)
+    except UpstreamBusy:
+        return JSONResponse(
+            {"error": "The assistant is busy right now (rate limit). Please wait a few seconds and try again.",
+             "request_id": request_id},
+            status_code=429)
     except (UpstreamHTTPError, UpstreamMalformed):
         return JSONResponse(
             {"error": "The rules service is temporarily unavailable.", "request_id": request_id},

@@ -111,6 +111,27 @@ def test_groq_auth_failure_500_no_retry():
     assert route.call_count == 1  # auth failures are not retried
 
 
+def test_rate_limit_429_retried_then_busy(monkeypatch):
+    import api.index as idx
+    monkeypatch.setattr(idx, "GROQ_BACKOFF_S", 0)  # no real sleeping in tests
+    with respx.mock:
+        route = respx.post(GROQ_URL).mock(return_value=httpx.Response(429, json={"error": "rate"}))
+        r = client.post("/api/chat", json={"message": "offside?"})
+    assert r.status_code == 429
+    assert route.call_count == idx.GROQ_MAX_RETRIES  # 429 is retried, not given up immediately
+
+
+def test_rate_limit_recovers_on_retry(monkeypatch):
+    import api.index as idx
+    monkeypatch.setattr(idx, "GROQ_BACKOFF_S", 0)
+    responses = [httpx.Response(429, json={"error": "rate"}),
+                 httpx.Response(200, json=_groq_json("answered", "Offside is in Law 11 [p. 103].", [103]))]
+    with respx.mock:
+        respx.post(GROQ_URL).mock(side_effect=responses)
+        r = client.post("/api/chat", json={"message": "What is the offside rule?"})
+    assert r.status_code == 200 and r.json()["status"] == "answered"
+
+
 def test_security_headers_present():
     r = client.get("/api/health")
     assert r.headers.get("X-Content-Type-Options") == "nosniff"
