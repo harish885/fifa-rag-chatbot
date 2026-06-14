@@ -44,6 +44,7 @@ logger = logging.getLogger("laws_rag")
 MAX_MESSAGE_CHARS = 1000
 MAX_HISTORY_MESSAGES = 12
 MAX_HISTORY_CONTENT_CHARS = 2000
+CONTEXT_TOP_K = 8  # chunks (distinct pages) handed to the generator
 GROQ_TIMEOUT_S = 25.0
 GROQ_MAX_RETRIES = 2  # transient errors only
 
@@ -56,13 +57,17 @@ SYSTEM_PROMPT = (
     "single JSON object and nothing else:\n"
     '{"status": "answered" | "insufficient_context" | "out_of_scope", '
     '"answer": string, "cited_pages": [int, ...]}\n'
-    "- status \"answered\": the context contains the answer. Cite the page(s) you "
-    "used both inline as [p. N] and in cited_pages.\n"
+    "- status \"answered\": the context contains the answer. Write a COMPLETE, "
+    "self-contained answer of 1-3 full sentences (never a sentence fragment). "
+    "Restate what is being asked and include every specific figure, measurement "
+    "and unit found in the context (e.g. distances in metres, times in minutes). "
+    "If the question asks for dimensions, give each dimension with its number and "
+    "unit. Cite the page(s) you used inline as [p. N] and in cited_pages.\n"
     "- status \"insufficient_context\": the question is about the Laws but the "
     "context does not contain the answer. Say so plainly; cited_pages = [].\n"
     "- status \"out_of_scope\": the question is not about the Laws of the Game "
     "(e.g. match results, history, players). Decline briefly; cited_pages = [].\n"
-    "Never invent rules or page numbers. Be concise and accurate."
+    "Never invent rules, figures or page numbers; use only what the context states."
 )
 
 # Build the retriever once per cold start.
@@ -259,7 +264,7 @@ async def chat(req: ChatRequest):
     # --- retrieve (history-aware) ---
     history = [m.model_dump() for m in req.history]
     rq = build_retrieval_query(req.message, history, DEFAULT_CONFIG)
-    results = RETRIEVER.search(rq.text)
+    results = RETRIEVER.search(rq.text, top_k=CONTEXT_TOP_K)
     diag = RETRIEVER.diagnostics(rq.text, results)
     logger.info("req=%s results=%d top=%.2f rewritten=%s", request_id,
                 diag["num_results"], diag["top_score"], rq.rewritten)

@@ -1,6 +1,6 @@
 {
   "run": {
-    "timestamp_utc": "2026-06-13T20:23:34Z",
+    "timestamp_utc": "2026-06-14T10:13:28Z",
     "metric": "Page Hit Rate@k (hit@k): a query is a hit at k if any top-k chunk is on a gold page.",
     "dataset": {
       "name": "laws_dev_v1",
@@ -339,15 +339,17 @@
           ],
           "retrieved_pages": [
             43,
-            207,
-            191,
-            77,
-            115
+            21,
+            46,
+            129,
+            52
           ],
           "unique_pages": 5,
           "first_hit_rank": 1,
           "hit@5": true,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",
@@ -484,7 +486,7 @@
         "hit@3": 0.6,
         "hit@5": 0.75,
         "page_mrr@5": 0.549,
-        "mean_unique_pages@5": 4.45,
+        "mean_unique_pages@5": 4.4,
         "hit@5_count": "15/20",
         "hit@5_wilson_ci95": [
           0.531,
@@ -795,15 +797,17 @@
           ],
           "retrieved_pages": [
             43,
-            207,
-            191,
-            77,
-            115
+            21,
+            46,
+            46,
+            129
           ],
-          "unique_pages": 5,
+          "unique_pages": 4,
           "first_hit_rank": 1,
           "hit@5": true,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",
@@ -1259,7 +1263,9 @@
           "unique_pages": 5,
           "first_hit_rank": 1,
           "hit@5": true,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",
@@ -1743,7 +1749,9 @@
           "unique_pages": 5,
           "first_hit_rank": 1,
           "hit@5": true,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",
@@ -2227,7 +2235,9 @@
           "unique_pages": 5,
           "first_hit_rank": 1,
           "hit@5": true,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",
@@ -2738,7 +2748,9 @@
           "unique_pages": 5,
           "first_hit_rank": null,
           "hit@5": false,
-          "expansion_phrases": []
+          "expansion_phrases": [
+            "dimensions"
+          ]
         },
         {
           "question": "When is a goal scored?",

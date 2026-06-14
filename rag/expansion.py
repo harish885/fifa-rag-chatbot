@@ -46,6 +46,13 @@ SYNONYMS: Dict[str, str] = {
     "added time": "additional time allowance",
     "how long": "duration period",
     "hand ball": "handball",
+    # Structural / measurement questions: users say "dimensions/size", the Laws
+    # use "length", "width", "height" and name the parts (goalposts, crossbar).
+    "dimensions": "length width height goalposts crossbar",
+    "size of the goal": "goalposts crossbar",
+    "goal dimensions": "goalposts crossbar",
+    "size of the pitch": "length width field of play",
+    "size of the field": "length width field of play",
 }
 
 # Provenance tag per entry: "glossary" (traceable to the document) or
@@ -67,6 +74,11 @@ SYNONYM_SOURCES: Dict[str, str] = {
     "added time": "glossary",
     "how long": "dev",
     "hand ball": "glossary",
+    "dimensions": "dev",
+    "size of the goal": "dev",
+    "goal dimensions": "dev",
+    "size of the pitch": "dev",
+    "size of the field": "dev",
 }
 
 
