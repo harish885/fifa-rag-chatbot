@@ -1,0 +1,26 @@
+{
+  "name": "laws_answer_eval_v1",
+  "role": "development",
+  "created_by": "group",
+  "notes": "Items for answer-level (qualitative) evaluation. Scoring is HUMAN and authoritative; see eval/README.md for the rubric. Includes in-domain, out-of-domain, ambiguous, and conversational follow-up items. Human scores are pending and must not be fabricated.",
+  "items": [
+    {"id": "ans01", "type": "in_domain", "question": "When is a player in an offside position?"},
+    {"id": "ans02", "type": "in_domain", "question": "How long is the half-time interval?"},
+    {"id": "ans03", "type": "in_domain", "question": "When does touching the ball with the hand count as a handball offence?"},
+    {"id": "ans04", "type": "in_domain", "question": "What is the circumference of the ball?"},
+    {"id": "ans05", "type": "in_domain", "question": "For which offences is a player sent off with a red card?"},
+    {"id": "ans06", "type": "out_of_domain", "question": "Who won the 2022 FIFA World Cup?"},
+    {"id": "ans07", "type": "out_of_domain", "question": "What is Lionel Messi's transfer fee?"},
+    {"id": "ans08", "type": "ambiguous", "question": "What about the wall?"},
+    {"id": "ans09", "type": "ambiguous", "question": "Is it allowed?"},
+    {"id": "ans10", "type": "follow_up", "question": "What are the exceptions?",
+      "history": [{"role": "user", "content": "When is a player in an offside position?"},
+                  {"role": "assistant", "content": "A player is in an offside position if any part of the head, body or feet is in the opponents' half and nearer to the opponents' goal line than both the ball and the second-last opponent [p. 103]."}]},
+    {"id": "ans11", "type": "follow_up", "question": "Where must the goalkeeper stand?",
+      "history": [{"role": "user", "content": "How is a penalty kick taken?"},
+                  {"role": "assistant", "content": "The ball is placed on the penalty mark and the kicker is identified; the goalkeeper must remain on the goal line until the ball is kicked [p. 129]."}]},
+    {"id": "ans12", "type": "follow_up", "question": "Can the player be replaced?",
+      "history": [{"role": "user", "content": "What happens when a player gets a red card?"},
+                  {"role": "assistant", "content": "A player who is sent off must leave the field of play and the technical area [p. 117]."}]}
+  ]
+}

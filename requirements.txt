@@ -1,3 +1,11 @@
-fastapi==0.115.12
+# Deployment / runtime dependencies (what the Vercel function needs).
+# Keep this lean — it is what Vercel installs. Dev/ingestion/notebook/test
+# tooling lives in requirements-dev.txt.
+#
+# Security note: fastapi 0.115.x resolved to starlette 0.46.2, which is
+# vulnerable to CVE-2026-48710 (Host-header auth bypass, "BadHost"), fixed in
+# starlette 1.0.1. We require a patched starlette via a compatible fastapi.
+fastapi==0.136.3
+starlette>=1.0.1
 httpx==0.28.1
-pydantic==2.10.6
+pydantic>=2.11,<3

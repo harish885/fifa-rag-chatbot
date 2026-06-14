@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laws of the Game — RAG Chatbot</title>
+<title>Laws of the Game — RAG Chatbot (educational)</title>
 <style>
   :root {
     --bg: #0d1117; --panel: #161b22; --border: #30363d;
     --text: #e6edf3; --muted: #8b949e; --accent: #2ea043; --user: #1f6feb;
+    --warn: #d29922; --err: #f85149;
   }
   * { box-sizing: border-box; margin: 0; }
   body {
@@ -16,19 +17,28 @@
     display: flex; flex-direction: column; height: 100dvh;
   }
   header {
-    padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 10px;
   }
   header .ball { font-size: 22px; }
   header h1 { font-size: 16px; font-weight: 600; }
   header p { font-size: 12px; color: var(--muted); }
+  header .spacer { flex: 1; }
+  #clear { background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 6px 12px; font-size: 12.5px; cursor: pointer; }
+  #clear:hover { color: var(--text); border-color: var(--accent); }
+  .disclaimer { font-size: 11.5px; color: var(--muted); background: #11161d;
+    border-bottom: 1px solid var(--border); padding: 7px 20px; }
   #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-  .msg { max-width: 78%; padding: 12px 16px; border-radius: 14px; line-height: 1.5; font-size: 14.5px; white-space: pre-wrap; }
+  .msg { max-width: 80%; padding: 12px 16px; border-radius: 14px; line-height: 1.5; font-size: 14.5px; white-space: pre-wrap; }
   .user { align-self: flex-end; background: var(--user); border-bottom-right-radius: 4px; }
   .bot  { align-self: flex-start; background: var(--panel); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
-  .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
-  .sources span { display: inline-block; background: #21262d; border-radius: 10px; padding: 2px 9px; margin: 2px 4px 0 0; }
+  .bot.refusal { border-color: var(--warn); }
+  .bot.error { border-color: var(--err); }
   .typing { color: var(--muted); font-style: italic; }
+  .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+  .sources .badge { display: inline-block; background: #21262d; border-radius: 10px; padding: 2px 9px; margin: 2px 4px 0 0; }
+  .verify { margin-top: 8px; font-size: 11.5px; color: var(--muted); }
   .suggest { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 10px; }
   .suggest button {
     background: var(--panel); border: 1px solid var(--border); color: var(--muted);
@@ -46,30 +56,42 @@
     padding: 0 22px; font-size: 14.5px; font-weight: 600; cursor: pointer;
   }
   button[type=submit]:disabled { opacity: .5; cursor: default; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 </style>
 </head>
 <body>
 <header>
-  <span class="ball">⚽</span>
+  <span class="ball" aria-hidden="true">⚽</span>
   <div>
     <h1>Laws of the Game 2025/26 — Chatbot</h1>
-    <p>RAG over the official IFAB/FIFA rulebook · BM25 retrieval + Llama-3.1 on Groq</p>
+    <p>Educational RAG over the IFAB/FIFA rulebook · BM25 retrieval + Llama-3.1 on Groq</p>
   </div>
+  <span class="spacer"></span>
+  <button id="clear" type="button" aria-label="Clear conversation">Clear</button>
 </header>
 
-<div id="chat">
-  <div class="msg bot">Hi! Ask me anything about the FIFA Laws of the Game 2025/26 — offside, handball, penalties, VAR, equipment, you name it. Answers are grounded in the official PDF with page citations.</div>
+<div class="disclaimer" role="note">
+  Educational project — <strong>not affiliated with or endorsed by FIFA or IFAB</strong>.
+  Answers may be incomplete; always verify against the official Laws of the Game document.
 </div>
 
+<div id="chat" aria-live="polite" aria-label="Conversation">
+  <div class="msg bot">Hi! Ask me anything about the FIFA Laws of the Game 2025/26 — offside, handball, penalties, VAR, equipment. Answers are grounded in the official PDF with page citations you can check.</div>
+</div>
+
+<div class="sr-only" id="status" role="status" aria-live="assertive"></div>
+
 <div class="suggest" id="suggest">
-  <button>What is the offside rule?</button>
-  <button>When is a handball an offence?</button>
-  <button>How long is half-time?</button>
-  <button>What are the dimensions of the goal?</button>
+  <button type="button">What is the offside rule?</button>
+  <button type="button">When is a handball an offence?</button>
+  <button type="button">How long is half-time?</button>
+  <button type="button">What are the dimensions of the goal?</button>
 </div>
 
 <form id="form">
-  <input id="input" placeholder="Ask about the Laws of the Game…" autocomplete="off" autofocus>
+  <input id="input" placeholder="Ask about the Laws of the Game…" autocomplete="off" autofocus
+         aria-label="Your question">
   <button type="submit" id="send">Send</button>
 </form>
 
@@ -78,13 +100,24 @@ const chat = document.getElementById('chat');
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const send = document.getElementById('send');
-const history = [];
+const statusRegion = document.getElementById('status');
+const MAX_HISTORY = 12;
+let history = [];
+let busy = false;
 
 document.getElementById('suggest').addEventListener('click', e => {
   if (e.target.tagName === 'BUTTON') { input.value = e.target.textContent; form.requestSubmit(); }
 });
+document.getElementById('clear').addEventListener('click', () => {
+  history = [];
+  chat.querySelectorAll('.msg').forEach((m, i) => { if (i > 0) m.remove(); });
+  setStatus('Conversation cleared.');
+  input.focus();
+});
 
-function add(cls, text) {
+function setStatus(t) { statusRegion.textContent = t; }
+
+function addMessage(cls, text) {
   const d = document.createElement('div');
   d.className = 'msg ' + cls;
   d.textContent = text;
@@ -93,42 +126,72 @@ function add(cls, text) {
   return d;
 }
 
+function renderSources(container, sources) {
+  const wrap = document.createElement('div');
+  wrap.className = 'sources';
+  const label = document.createElement('span');
+  label.textContent = '📖 Sources: ';
+  wrap.appendChild(label);
+  sources.forEach(s => {
+    const b = document.createElement('span');
+    b.className = 'badge';
+    b.textContent = 'p. ' + s.page;        // page is a number from the server
+    wrap.appendChild(b);
+  });
+  const note = document.createElement('div');
+  note.className = 'verify';
+  note.textContent = 'Verify these pages in the official document.';
+  wrap.appendChild(note);
+  container.appendChild(wrap);
+}
+
 form.addEventListener('submit', async e => {
   e.preventDefault();
+  if (busy) return;                         // prevent double submission
   const q = input.value.trim();
   if (!q) return;
+  busy = true; send.disabled = true;
   input.value = '';
-  send.disabled = true;
-  add('user', q);
-  const typing = add('bot typing', 'Consulting the rulebook…');
+  addMessage('user', q);
+  const pending = addMessage('bot typing', 'Consulting the rulebook…');
+  setStatus('Working…');
 
   try {
     const r = await fetch('/api/chat', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: q, history })
     });
-    const data = await r.json();
-    typing.classList.remove('typing');
-    if (data.error) {
-      typing.textContent = '⚠️ ' + data.error;
+
+    let data = null;
+    try { data = await r.json(); } catch { data = null; }
+    pending.classList.remove('typing');
+
+    if (!r.ok || !data) {
+      pending.classList.add('error');
+      pending.textContent = '⚠️ ' + ((data && data.error) || ('Request failed (' + r.status + ').'));
+      setStatus('Error.');
+    } else if (data.status === 'out_of_scope' || data.status === 'insufficient_context') {
+      pending.classList.add('refusal');
+      pending.textContent = data.answer;     // no source badges on a refusal
+      setStatus('No grounded answer.');
     } else {
-      typing.textContent = data.answer;
-      if (data.sources && data.sources.length) {
-        const s = document.createElement('div');
-        s.className = 'sources';
-        s.innerHTML = '📖 Sources: ' + data.sources.map(x => `<span>p. ${x.page}</span>`).join('');
-        typing.appendChild(s);
-      }
+      pending.textContent = data.answer;
+      if (data.sources && data.sources.length) renderSources(pending, data.sources);
       history.push({ role: 'user', content: q }, { role: 'assistant', content: data.answer });
+      if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
+      setStatus('Answered.');
     }
   } catch (err) {
-    typing.classList.remove('typing');
-    typing.textContent = '⚠️ Request failed: ' + err.message;
+    pending.classList.remove('typing');
+    pending.classList.add('error');
+    pending.textContent = '⚠️ Request failed: ' + err.message;
+    setStatus('Error.');
+  } finally {
+    busy = false; send.disabled = false;     // always re-enable
+    chat.scrollTop = chat.scrollHeight;
+    input.focus();
   }
-  send.disabled = false;
-  chat.scrollTop = chat.scrollHeight;
-  input.focus();
 });
 </script>
 </body>

@@ -1,30 +1,3066 @@
-[
-  {
-    "name": "BM25 + query expansion (production)",
-    "recall@1": 0.4,
-    "recall@3": 0.7,
-    "recall@5": 0.8,
-    "mrr@5": 0.5641666666666667
+{
+  "run": {
+    "timestamp_utc": "2026-06-13T20:23:34Z",
+    "metric": "Page Hit Rate@k (hit@k): a query is a hit at k if any top-k chunk is on a gold page.",
+    "dataset": {
+      "name": "laws_dev_v1",
+      "role": "development",
+      "n": 20
+    },
+    "corpus": {
+      "chunks_file": "data/chunks.json",
+      "chunk_count": 267,
+      "chunks_sha256": "d2748099aac77b204c7928ba0046c04a9038d8c9a5fff24fe256e46042f8d471"
+    },
+    "config": {
+      "top_k": 5,
+      "candidate_pool": 30,
+      "bm25_k1": 1.5,
+      "bm25_b": 0.75
+    },
+    "caveat": "Development set; gains are optimistic, not held-out. Page labels are coarse and do not establish answer correctness."
   },
-  {
-    "name": "BM25 plain",
-    "recall@1": 0.4,
-    "recall@3": 0.65,
-    "recall@5": 0.7,
-    "mrr@5": 0.5208333333333333
-  },
-  {
-    "name": "TF-IDF cosine (baseline)",
-    "recall@1": 0.45,
-    "recall@3": 0.65,
-    "recall@5": 0.65,
-    "mrr@5": 0.5250000000000001
-  },
-  {
-    "name": "Random (floor)",
-    "recall@1": 0.0,
-    "recall@3": 0.05,
-    "recall@5": 0.05,
-    "mrr@5": 0.016666666666666666
-  }
-]
+  "systems": [
+    {
+      "name": "BM25 + expansion + page-dedup (production)",
+      "metrics": {
+        "hit@1": 0.45,
+        "hit@3": 0.6,
+        "hit@5": 0.75,
+        "page_mrr@5": 0.549,
+        "mean_unique_pages@5": 5.0,
+        "hit@5_count": "15/20",
+        "hit@5_wilson_ci95": [
+          0.531,
+          0.888
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            87,
+            58,
+            29,
+            56,
+            20
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            51,
+            104,
+            213,
+            132,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            114,
+            181,
+            70,
+            58,
+            120
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 5,
+          "hit@5": true,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            42,
+            171,
+            199,
+            44,
+            129
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 4,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            56,
+            55,
+            35,
+            99,
+            43
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            214,
+            103,
+            210,
+            209,
+            213
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            46,
+            20,
+            44,
+            95,
+            21
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            20,
+            166,
+            182,
+            21,
+            87
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 5,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            110,
+            151,
+            167,
+            113,
+            168
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            63,
+            65,
+            64,
+            73,
+            24
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            56,
+            29,
+            87,
+            20,
+            58
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            180,
+            100,
+            99,
+            97,
+            179
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            55,
+            99,
+            71,
+            58,
+            100
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            18
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            43,
+            207,
+            191,
+            77,
+            115
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            60,
+            194,
+            169,
+            178,
+            139
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            118,
+            149,
+            117,
+            71,
+            114
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            166,
+            161,
+            92,
+            91,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            56,
+            29,
+            87,
+            20,
+            58
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            18
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            60,
+            194,
+            169,
+            178,
+            139
+          ],
+          "gold_pages": [
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BM25 + expansion, chunk-level (no dedup)",
+      "metrics": {
+        "hit@1": 0.45,
+        "hit@3": 0.6,
+        "hit@5": 0.75,
+        "page_mrr@5": 0.549,
+        "mean_unique_pages@5": 4.45,
+        "hit@5_count": "15/20",
+        "hit@5_wilson_ci95": [
+          0.531,
+          0.888
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            87,
+            58,
+            29,
+            56,
+            20
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            51,
+            104,
+            104,
+            213,
+            132
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            114,
+            181,
+            70,
+            58,
+            120
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 5,
+          "hit@5": true,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            42,
+            171,
+            199,
+            44,
+            129
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 4,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            56,
+            55,
+            35,
+            56,
+            55
+          ],
+          "unique_pages": 3,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            214,
+            103,
+            210,
+            209,
+            213
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            46,
+            46,
+            20,
+            44,
+            95
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            20,
+            166,
+            182,
+            21,
+            87
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 5,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            110,
+            151,
+            167,
+            113,
+            168
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            63,
+            65,
+            64,
+            64,
+            63
+          ],
+          "unique_pages": 3,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            56,
+            29,
+            87,
+            20,
+            58
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            180,
+            100,
+            99,
+            97,
+            99
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            55,
+            99,
+            99,
+            71,
+            58
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            18
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            43,
+            207,
+            191,
+            77,
+            115
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            60,
+            194,
+            60,
+            169,
+            178
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            118,
+            149,
+            149,
+            117,
+            71
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            166,
+            161,
+            92,
+            92,
+            91
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            56,
+            29,
+            87,
+            20,
+            58
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            18
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            60,
+            194,
+            60,
+            169,
+            178
+          ],
+          "gold_pages": [
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BM25 plain + page-dedup (ablation: no expansion)",
+      "metrics": {
+        "hit@1": 0.45,
+        "hit@3": 0.6,
+        "hit@5": 0.65,
+        "page_mrr@5": 0.529,
+        "mean_unique_pages@5": 5.0,
+        "hit@5_count": "13/20",
+        "hit@5_wilson_ci95": [
+          0.433,
+          0.819
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            87,
+            20,
+            58,
+            91,
+            56
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            51,
+            104,
+            213,
+            132,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            181,
+            114,
+            70,
+            149,
+            31
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            42,
+            171,
+            199,
+            44,
+            129
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 4,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            56,
+            55,
+            35,
+            99,
+            43
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            214,
+            103,
+            210,
+            209,
+            213
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            46,
+            20,
+            44,
+            95,
+            21
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            110,
+            151,
+            167,
+            113,
+            168
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            63,
+            65,
+            64,
+            73,
+            24
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            56,
+            20,
+            87,
+            177,
+            58
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            180,
+            100,
+            99,
+            97,
+            91
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            55,
+            99,
+            71,
+            58,
+            100
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            28,
+            114,
+            29
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            43,
+            207,
+            191,
+            77,
+            115
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            60,
+            194,
+            169,
+            178,
+            139
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            118,
+            149,
+            117,
+            71,
+            114
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            166,
+            161,
+            92,
+            91,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "retrieved_pages": [
+            181,
+            114,
+            70,
+            149,
+            31
+          ],
+          "gold_pages": [
+            117,
+            118,
+            120
+          ]
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How long does a football match last?",
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "gold_pages": [
+            87
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            56,
+            20,
+            87,
+            177,
+            58
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            31,
+            30,
+            28,
+            114,
+            29
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            60,
+            194,
+            169,
+            178,
+            139
+          ],
+          "gold_pages": [
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BM25 plain, chunk-level (no expansion, no dedup)",
+      "metrics": {
+        "hit@1": 0.45,
+        "hit@3": 0.6,
+        "hit@5": 0.65,
+        "page_mrr@5": 0.529,
+        "mean_unique_pages@5": 4.45,
+        "hit@5_count": "13/20",
+        "hit@5_wilson_ci95": [
+          0.433,
+          0.819
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            87,
+            20,
+            58,
+            91,
+            56
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            51,
+            104,
+            104,
+            213,
+            132
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            181,
+            114,
+            70,
+            149,
+            31
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            42,
+            171,
+            199,
+            44,
+            129
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 4,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            56,
+            55,
+            35,
+            56,
+            55
+          ],
+          "unique_pages": 3,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            214,
+            103,
+            210,
+            209,
+            213
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            46,
+            46,
+            20,
+            44,
+            95
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            110,
+            151,
+            167,
+            113,
+            168
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            63,
+            65,
+            64,
+            64,
+            63
+          ],
+          "unique_pages": 3,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            56,
+            20,
+            87,
+            177,
+            58
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            180,
+            100,
+            99,
+            97,
+            99
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            55,
+            99,
+            99,
+            71,
+            58
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            28,
+            114,
+            29
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            43,
+            207,
+            191,
+            77,
+            115
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            60,
+            194,
+            60,
+            169,
+            178
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            118,
+            149,
+            149,
+            117,
+            71
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            166,
+            161,
+            92,
+            92,
+            91
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "retrieved_pages": [
+            181,
+            114,
+            70,
+            149,
+            31
+          ],
+          "gold_pages": [
+            117,
+            118,
+            120
+          ]
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            135,
+            99,
+            116,
+            199,
+            171
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How long does a football match last?",
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "gold_pages": [
+            87
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            204,
+            91,
+            207,
+            20,
+            117
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            56,
+            20,
+            87,
+            177,
+            58
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            31,
+            30,
+            28,
+            114,
+            29
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            60,
+            194,
+            60,
+            169,
+            178
+          ],
+          "gold_pages": [
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TF-IDF cosine (baseline)",
+      "metrics": {
+        "hit@1": 0.3,
+        "hit@3": 0.5,
+        "hit@5": 0.55,
+        "page_mrr@5": 0.396,
+        "mean_unique_pages@5": 4.65,
+        "hit@5_count": "11/20",
+        "hit@5_wilson_ci95": [
+          0.342,
+          0.742
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            87,
+            20,
+            58,
+            91,
+            56
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            51,
+            127,
+            132,
+            103,
+            209
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            149,
+            114,
+            181,
+            70,
+            109
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            199,
+            84,
+            171,
+            129,
+            20
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 4,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            56,
+            56,
+            55,
+            35,
+            55
+          ],
+          "unique_pages": 3,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            209,
+            213,
+            212,
+            210,
+            214
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            20,
+            46,
+            44,
+            46,
+            92
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            135,
+            99,
+            52,
+            97,
+            57
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            167,
+            92,
+            113,
+            168,
+            109
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            84,
+            20,
+            207,
+            204,
+            188
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            63,
+            73,
+            65,
+            64,
+            64
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            20,
+            56,
+            166,
+            91,
+            177
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            97,
+            100,
+            91,
+            20,
+            180
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 2,
+          "hit@5": true,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            55,
+            99,
+            80,
+            43,
+            188
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            149
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            43,
+            207,
+            191,
+            115,
+            202
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            60,
+            60,
+            139,
+            169,
+            143
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            118,
+            149,
+            149,
+            105,
+            117
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            161,
+            166,
+            92,
+            91,
+            92
+          ],
+          "unique_pages": 4,
+          "first_hit_rank": 3,
+          "hit@5": true,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "retrieved_pages": [
+            149,
+            114,
+            181,
+            70,
+            109
+          ],
+          "gold_pages": [
+            117,
+            118,
+            120
+          ]
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "retrieved_pages": [
+            209,
+            213,
+            212,
+            210,
+            214
+          ],
+          "gold_pages": [
+            103
+          ]
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            135,
+            99,
+            52,
+            97,
+            57
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How long does a football match last?",
+          "retrieved_pages": [
+            20,
+            166,
+            91,
+            12,
+            165
+          ],
+          "gold_pages": [
+            87
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "retrieved_pages": [
+            167,
+            92,
+            113,
+            168,
+            109
+          ],
+          "gold_pages": [
+            110,
+            111
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            84,
+            20,
+            207,
+            204,
+            188
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            20,
+            56,
+            166,
+            91,
+            177
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            31,
+            30,
+            114,
+            28,
+            149
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            60,
+            60,
+            139,
+            169,
+            143
+          ],
+          "gold_pages": [
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Random (floor)",
+      "metrics": {
+        "hit@1": 0.05,
+        "hit@3": 0.05,
+        "hit@5": 0.05,
+        "page_mrr@5": 0.05,
+        "mean_unique_pages@5": 5.0,
+        "hit@5_count": "1/20",
+        "hit@5_wilson_ci95": [
+          0.009,
+          0.236
+        ]
+      },
+      "per_query": [
+        {
+          "question": "How long is the half-time interval?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            55,
+            17,
+            116,
+            106,
+            97
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "gold_pages": [
+            51
+          ],
+          "retrieved_pages": [
+            63,
+            49,
+            44,
+            176,
+            21
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "gold_pages": [
+            117,
+            118,
+            120
+          ],
+          "retrieved_pages": [
+            20,
+            46,
+            92,
+            103,
+            210
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "red card"
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "gold_pages": [
+            44,
+            129
+          ],
+          "retrieved_pages": [
+            18,
+            81,
+            174,
+            95,
+            187
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            117,
+            11,
+            69,
+            176,
+            143
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "gold_pages": [
+            103
+          ],
+          "retrieved_pages": [
+            117,
+            67,
+            92,
+            139,
+            49
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How high is the crossbar from the ground?",
+          "gold_pages": [
+            46,
+            47
+          ],
+          "retrieved_pages": [
+            46,
+            154,
+            47,
+            149,
+            144
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": 1,
+          "hit@5": true,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "gold_pages": [
+            129
+          ],
+          "retrieved_pages": [
+            114,
+            25,
+            192,
+            58,
+            153
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long does a football match last?",
+          "gold_pages": [
+            87
+          ],
+          "retrieved_pages": [
+            41,
+            121,
+            150,
+            80,
+            35
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "gold_pages": [
+            110,
+            111
+          ],
+          "retrieved_pages": [
+            26,
+            99,
+            120,
+            41,
+            103
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "gold_pages": [
+            126,
+            200
+          ],
+          "retrieved_pages": [
+            48,
+            154,
+            117,
+            189,
+            151
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "gold_pages": [
+            63,
+            73
+          ],
+          "retrieved_pages": [
+            70,
+            152,
+            148,
+            88,
+            114
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            35,
+            71,
+            106,
+            70,
+            193
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "how long"
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "gold_pages": [
+            100,
+            180
+          ],
+          "retrieved_pages": [
+            154,
+            115,
+            95,
+            132,
+            29
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "penalty shoot",
+            "shoot-out"
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "gold_pages": [
+            55
+          ],
+          "retrieved_pages": [
+            100,
+            21,
+            129,
+            166,
+            114
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "gold_pages": [
+            115,
+            116,
+            183
+          ],
+          "retrieved_pages": [
+            32,
+            91,
+            129,
+            208,
+            164
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": [
+            "yellow card"
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "gold_pages": [
+            43,
+            44
+          ],
+          "retrieved_pages": [
+            191,
+            64,
+            114,
+            63,
+            106
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "When is a goal scored?",
+          "gold_pages": [
+            97
+          ],
+          "retrieved_pages": [
+            113,
+            179,
+            166,
+            150,
+            95
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "What is serious foul play?",
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ],
+          "retrieved_pages": [
+            63,
+            212,
+            206,
+            45,
+            27
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "gold_pages": [
+            91,
+            92,
+            95
+          ],
+          "retrieved_pages": [
+            52,
+            66,
+            69,
+            176,
+            32
+          ],
+          "unique_pages": 5,
+          "first_hit_rank": null,
+          "hit@5": false,
+          "expansion_phrases": []
+        }
+      ],
+      "misses": [
+        {
+          "question": "How long is the half-time interval?",
+          "retrieved_pages": [
+            55,
+            17,
+            116,
+            106,
+            97
+          ],
+          "gold_pages": [
+            87
+          ]
+        },
+        {
+          "question": "What is the circumference of the ball?",
+          "retrieved_pages": [
+            63,
+            49,
+            44,
+            176,
+            21
+          ],
+          "gold_pages": [
+            51
+          ]
+        },
+        {
+          "question": "For which offences is a player sent off with a red card?",
+          "retrieved_pages": [
+            20,
+            46,
+            92,
+            103,
+            210
+          ],
+          "gold_pages": [
+            117,
+            118,
+            120
+          ]
+        },
+        {
+          "question": "How far is the penalty mark from the goal line?",
+          "retrieved_pages": [
+            18,
+            81,
+            174,
+            95,
+            187
+          ],
+          "gold_pages": [
+            44,
+            129
+          ]
+        },
+        {
+          "question": "What is the maximum number of substitutes allowed in official competitions?",
+          "retrieved_pages": [
+            117,
+            11,
+            69,
+            176,
+            143
+          ],
+          "gold_pages": [
+            55
+          ]
+        },
+        {
+          "question": "When is a player in an offside position?",
+          "retrieved_pages": [
+            117,
+            67,
+            92,
+            139,
+            49
+          ],
+          "gold_pages": [
+            103
+          ]
+        },
+        {
+          "question": "Where must the goalkeeper stand during a penalty kick?",
+          "retrieved_pages": [
+            114,
+            25,
+            192,
+            58,
+            153
+          ],
+          "gold_pages": [
+            129
+          ]
+        },
+        {
+          "question": "How long does a football match last?",
+          "retrieved_pages": [
+            41,
+            121,
+            150,
+            80,
+            35
+          ],
+          "gold_pages": [
+            87
+          ]
+        },
+        {
+          "question": "When does touching the ball with the hand count as a handball offence?",
+          "retrieved_pages": [
+            26,
+            99,
+            120,
+            41,
+            103
+          ],
+          "gold_pages": [
+            110,
+            111
+          ]
+        },
+        {
+          "question": "How far away must the defensive wall be from the ball at a free kick?",
+          "retrieved_pages": [
+            48,
+            154,
+            117,
+            189,
+            151
+          ],
+          "gold_pages": [
+            126,
+            200
+          ]
+        },
+        {
+          "question": "Are players allowed to wear jewellery?",
+          "retrieved_pages": [
+            70,
+            152,
+            148,
+            88,
+            114
+          ],
+          "gold_pages": [
+            63,
+            73
+          ]
+        },
+        {
+          "question": "How long are the periods of extra time?",
+          "retrieved_pages": [
+            35,
+            71,
+            106,
+            70,
+            193
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "How many kicks does each team take in a penalty shoot-out?",
+          "retrieved_pages": [
+            154,
+            115,
+            95,
+            132,
+            29
+          ],
+          "gold_pages": [
+            100,
+            180
+          ]
+        },
+        {
+          "question": "What is the minimum number of players a team needs for the match to continue?",
+          "retrieved_pages": [
+            100,
+            21,
+            129,
+            166,
+            114
+          ],
+          "gold_pages": [
+            55
+          ]
+        },
+        {
+          "question": "What are the cautionable offences punished by a yellow card?",
+          "retrieved_pages": [
+            32,
+            91,
+            129,
+            208,
+            164
+          ],
+          "gold_pages": [
+            115,
+            116,
+            183
+          ]
+        },
+        {
+          "question": "What are the required dimensions of the field of play?",
+          "retrieved_pages": [
+            191,
+            64,
+            114,
+            63,
+            106
+          ],
+          "gold_pages": [
+            43,
+            44
+          ]
+        },
+        {
+          "question": "When is a goal scored?",
+          "retrieved_pages": [
+            113,
+            179,
+            166,
+            150,
+            95
+          ],
+          "gold_pages": [
+            97
+          ]
+        },
+        {
+          "question": "What is serious foul play?",
+          "retrieved_pages": [
+            63,
+            212,
+            206,
+            45,
+            27
+          ],
+          "gold_pages": [
+            114,
+            117,
+            118,
+            181
+          ]
+        },
+        {
+          "question": "How is a dropped ball taken and to whom is the ball dropped?",
+          "retrieved_pages": [
+            52,
+            66,
+            69,
+            176,
+            32
+          ],
+          "gold_pages": [
+            91,
+            92,
+            95
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,560 @@
+{
+  "run": {
+    "timestamp_utc": "2026-06-13T20:30:07Z",
+    "dataset": "laws_answer_eval_v1",
+    "model": null,
+    "generated": false,
+    "scoring": "HUMAN rubric is authoritative; see eval/README.md. Automated citation checks are diagnostic only."
+  },
+  "items": [
+    {
+      "id": "ans01",
+      "type": "in_domain",
+      "question": "When is a player in an offside position?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        214,
+        103,
+        210,
+        209,
+        213
+      ],
+      "sources": [
+        {
+          "page": 214,
+          "preview": "The shot by a team-mate (A) rebounds from the goalkeeper, (B) is in an onside position and plays the ball, (C) in an offside position is not penalised because…"
+        },
+        {
+          "page": 103,
+          "preview": "1. Offside position It is not an offence to be in an offside position. A player is in an offside position if: • any part of the head, body or feet is in the op…"
+        },
+        {
+          "page": 210,
+          "preview": "A player in an offside position (A) may be penalised before playing or touching the ball, if, in the opinion of the referee, no other team-mate in an onside po…"
+        },
+        {
+          "page": 209,
+          "preview": "An attacker in an offside position (A), not interfering with an opponent, touches the ball. The assistant referee must raise the flag when the player touches t…"
+        },
+        {
+          "page": 213,
+          "preview": "An attacker in an offside position (A) runs towards the ball, preventing the opponent (B) from playing or being able to play the ball by challenging the oppone…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans02",
+      "type": "in_domain",
+      "question": "How long is the half-time interval?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        87,
+        58,
+        29,
+        56,
+        20
+      ],
+      "sources": [
+        {
+          "page": 87,
+          "preview": "1. Periods of play • A match lasts for two equal halves of 45 minutes, which may only be reduced if agreed between the referee and the two teams before the sta…"
+        },
+        {
+          "page": 58,
+          "preview": "5. Offences and sanctions • If a named substitute starts a match instead of a named player and the referee is not informed of this change: • the referee allows…"
+        },
+        {
+          "page": 29,
+          "preview": "• Competitions must decide who will help the referee time the dismissal period – it could be the responsibility of a delegate, fourth official or neutral assis…"
+        },
+        {
+          "page": 56,
+          "preview": "Extra time • If a team has not used the maximum number of substitutes and/or substitution opportunities, any unused substitutes and substitution opportunities…"
+        },
+        {
+          "page": 20,
+          "preview": "• The universality of the Laws of the Game means that the game is essentially the same in every part of the world and at every level. As well as creating a 'fa…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans03",
+      "type": "in_domain",
+      "question": "When does touching the ball with the hand count as a handball offence?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        110,
+        151,
+        167,
+        113,
+        168
+      ],
+      "sources": [
+        {
+          "page": 110,
+          "preview": "• holds an opponent • impedes an opponent with contact • bites or spits at someone on the team lists or a match official • throws an object at the ball, an opp…"
+        },
+        {
+          "page": 151,
+          "preview": "in general, slow-motion replays should only be used for facts, e.g. position of offence/player, point of contact for physical offences and handball, ball out o…"
+        },
+        {
+          "page": 167,
+          "preview": "another player • touches the ball with the hand/arm, unless the goalkeeper has clearly kicked or attempted to kick the ball to release it into play, after: · i…"
+        },
+        {
+          "page": 113,
+          "preview": "A goalkeeper is considered to be in control of the ball with their hand(s)/ arm(s) when: • the ball is between their hands/arms or between their hand(s)/arm(s)…"
+        },
+        {
+          "page": 168,
+          "preview": "Renumbering of the following subsections as follows: (p. 113, 121) 4. Disciplinary action 5. Restart of play after fouls and misconduct A goalkeeper cannot be…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans04",
+      "type": "in_domain",
+      "question": "What is the circumference of the ball?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        51,
+        104,
+        213,
+        132,
+        165
+      ],
+      "sources": [
+        {
+          "page": 51,
+          "preview": "1. Qualities and measurements All balls must be: • spherical • made of suitable material • of a circumference of between 68 cm (27 ins) and 70 cm (28 ins) • be…"
+        },
+        {
+          "page": 104,
+          "preview": "• clearly attempting to play a ball which is close when this action impacts on an opponent or • making an obvious action which clearly impacts on the ability o…"
+        },
+        {
+          "page": 213,
+          "preview": "An attacker in an offside position (A) runs towards the ball, preventing the opponent (B) from playing or being able to play the ball by challenging the oppone…"
+        },
+        {
+          "page": 132,
+          "preview": "If, after the penalty kick has been taken: • the kicker touches the ball again before it has touched another player: • an indirect free kick (or direct free ki…"
+        },
+        {
+          "page": 165,
+          "preview": "Law 5 – The Referee (p. 76) 6. Referee signals (...) Countdown for the last five seconds of the eight-second restriction on goalkeepers controlling the ball wi…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans05",
+      "type": "in_domain",
+      "question": "For which offences is a player sent off with a red card?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        114,
+        181,
+        70,
+        58,
+        120
+      ],
+      "sources": [
+        {
+          "page": 114,
+          "preview": "• If, before entering the field of play at the start of the match, a player or team official commits a sending-off offence, the referee has the authority to pr…"
+        },
+        {
+          "page": 181,
+          "preview": "R Reckless Any action (usually a tackle or challenge) by a player which disregards (ignores) the danger to, or consequences for, the opponent Restart Any metho…"
+        },
+        {
+          "page": 70,
+          "preview": "sending-off offences • has the authority to take disciplinary action from entering the field of play for the pre-match inspection until leaving the field of pl…"
+        },
+        {
+          "page": 58,
+          "preview": "occurred during half-time (including half-time of extra time) or the period between the end of the match and the start of extra time and/or penalties (penalty…"
+        },
+        {
+          "page": 120,
+          "preview": "• entering the referee review area (RRA) • excessively/persistently gesturing for a red or yellow card • excessively showing the 'TV signal' for a VAR 'review'…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans06",
+      "type": "out_of_domain",
+      "question": "Who won the 2022 FIFA World Cup?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        20,
+        11,
+        173,
+        14,
+        158
+      ],
+      "sources": [
+        {
+          "page": 20,
+          "preview": "• The universality of the Laws of the Game means that the game is essentially the same in every part of the world and at every level. As well as creating a 'fa…"
+        },
+        {
+          "page": 11,
+          "preview": "• Football is the greatest sport on earth. It is played on every continent, in every country and at many different levels. The fact that the Laws of the Game a…"
+        },
+        {
+          "page": 173,
+          "preview": "The IFAB – The International Football Association Board • Body composed of the four British FAs and FIFA which is responsible for the Laws of the Game worldwid…"
+        },
+        {
+          "page": 14,
+          "preview": "football at all levels and in every corner of the world. This should help ensure that the integrity of the game, the Laws themselves and the match officials ar…"
+        },
+        {
+          "page": 158,
+          "preview": "FIFA Quality Pro • The emphasis of the test requirements is on first-class performance, accuracy and safety. Products, playing surfaces and technologies with t…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans07",
+      "type": "out_of_domain",
+      "question": "What is Lionel Messi's transfer fee?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [],
+      "sources": [],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans08",
+      "type": "ambiguous",
+      "question": "What about the wall?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        188,
+        217,
+        81,
+        177,
+        22
+      ],
+      "sources": [
+        {
+          "page": 188,
+          "preview": "1. General positioning and movement • The best position is one from which the referee can make the correct decision. All recommendations about positioning must…"
+        },
+        {
+          "page": 217,
+          "preview": "When the referee decides play should restart, either: • the medical person(s) leaves and the player remains or • the player leaves for further assessment/treat…"
+        },
+        {
+          "page": 81,
+          "preview": "cautions or sends off the wrong player of the offending team. • An assistant video assistant referee (AVAR) is a match official who helps the VAR primarily by:…"
+        },
+        {
+          "page": 177,
+          "preview": "E Electronic performance and tracking system (EPTS) System which records and analyses data about the physical and physiological performance of a player Endange…"
+        },
+        {
+          "page": 22,
+          "preview": "Permission for other modifications • National FAs have the option to approve any of the above modifications for different competitions – there is no requiremen…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans09",
+      "type": "ambiguous",
+      "question": "Is it allowed?",
+      "rewritten_retrieval_query": null,
+      "retrieved_pages": [
+        130,
+        24,
+        174,
+        56,
+        22
+      ],
+      "sources": [
+        {
+          "page": 130,
+          "preview": "The ball is in play when it is kicked and clearly moves. The kicker must not play the ball again until it has touched another player. • The penalty kick is com…"
+        },
+        {
+          "page": 24,
+          "preview": "• The following simple guidelines should assist organisers of competitions wishing to apply the 'only the captain' principles. Guidelines • Normal interactions…"
+        },
+        {
+          "page": 174,
+          "preview": "A Abandon To end/terminate a match before the scheduled finish Additional time Time allowed at the end of each half for time 'lost' because of substitutions, i…"
+        },
+        {
+          "page": 56,
+          "preview": "be named of which a maximum of six may be used. • In all other matches, a greater number of substitutes may be used provided that: • the teams reach agreement…"
+        },
+        {
+          "page": 22,
+          "preview": "Permission for other modifications • National FAs have the option to approve any of the above modifications for different competitions – there is no requiremen…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans10",
+      "type": "follow_up",
+      "question": "What are the exceptions?",
+      "rewritten_retrieval_query": "What are the exceptions? player offside position",
+      "retrieved_pages": [
+        214,
+        103,
+        210,
+        209,
+        213
+      ],
+      "sources": [
+        {
+          "page": 214,
+          "preview": "The shot by a team-mate (A) rebounds from the goalkeeper, (B) is in an onside position and plays the ball, (C) in an offside position is not penalised because…"
+        },
+        {
+          "page": 103,
+          "preview": "1. Offside position It is not an offence to be in an offside position. A player is in an offside position if: • any part of the head, body or feet is in the op…"
+        },
+        {
+          "page": 210,
+          "preview": "A player in an offside position (A) may be penalised before playing or touching the ball, if, in the opinion of the referee, no other team-mate in an onside po…"
+        },
+        {
+          "page": 209,
+          "preview": "An attacker in an offside position (A), not interfering with an opponent, touches the ball. The assistant referee must raise the flag when the player touches t…"
+        },
+        {
+          "page": 213,
+          "preview": "An attacker in an offside position (A) runs towards the ball, preventing the opponent (B) from playing or being able to play the ball by challenging the oppone…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans11",
+      "type": "follow_up",
+      "question": "Where must the goalkeeper stand?",
+      "rewritten_retrieval_query": "Where must the goalkeeper stand? how penalty kick taken",
+      "retrieved_pages": [
+        135,
+        130,
+        129,
+        136,
+        99
+      ],
+      "sources": [
+        {
+          "page": 135,
+          "preview": "• A throw-in is awarded to the opponents of the player who last touched the ball when the whole of the ball passes over the touchline, on the ground or in the…"
+        },
+        {
+          "page": 130,
+          "preview": "The ball is in play when it is kicked and clearly moves. The kicker must not play the ball again until it has touched another player. • The penalty kick is com…"
+        },
+        {
+          "page": 129,
+          "preview": "• inside the field of play • outside the penalty area • After the players have taken positions in accordance with this Law, the referee signals for the penalty…"
+        },
+        {
+          "page": 136,
+          "preview": "2. Offences and sanctions • If, after the ball is in play, the thrower touches the ball again before it has touched another player, an indirect free kick is aw…"
+        },
+        {
+          "page": 99,
+          "preview": "greater number of players than its opponents, it must reduce its numbers to the same number as its opponents and the referee must be informed of the name and n…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    },
+    {
+      "id": "ans12",
+      "type": "follow_up",
+      "question": "Can the player be replaced?",
+      "rewritten_retrieval_query": "Can the player be replaced? happens gets red card",
+      "retrieved_pages": [
+        114,
+        181,
+        58,
+        70,
+        120
+      ],
+      "sources": [
+        {
+          "page": 114,
+          "preview": "• If, before entering the field of play at the start of the match, a player or team official commits a sending-off offence, the referee has the authority to pr…"
+        },
+        {
+          "page": 181,
+          "preview": "R Reckless Any action (usually a tackle or challenge) by a player which disregards (ignores) the danger to, or consequences for, the opponent Restart Any metho…"
+        },
+        {
+          "page": 58,
+          "preview": "occurred during half-time (including half-time of extra time) or the period between the end of the match and the start of extra time and/or penalties (penalty…"
+        },
+        {
+          "page": 70,
+          "preview": "sending-off offences • has the authority to take disciplinary action from entering the field of play for the pre-match inspection until leaving the field of pl…"
+        },
+        {
+          "page": 120,
+          "preview": "• entering the referee review area (RRA) • excessively/persistently gesturing for a red or yellow card • excessively showing the 'TV signal' for a VAR 'review'…"
+        }
+      ],
+      "model": "llama-3.1-8b-instant",
+      "answer": null,
+      "answer_status": null,
+      "citation_check": null,
+      "human_scores": {
+        "correctness": null,
+        "faithfulness": null,
+        "citation_correctness": null,
+        "citation_completeness": null,
+        "refusal_behavior": null,
+        "notes": ""
+      },
+      "state": "pending_generation"
+    }
+  ]
+}

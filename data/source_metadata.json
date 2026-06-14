@@ -1,0 +1,23 @@
+{
+  "document_title": "Laws of the Game 2025/26",
+  "edition": "2025/26",
+  "variant": "single pages",
+  "effective_from": "2025-07-01",
+  "publisher": "The International Football Association Board (IFAB)",
+  "rights_holder": "The International Football Association Board (IFAB) / FIFA",
+  "authored_by_project_team": false,
+  "official_source_url": "https://downloads.theifab.com/downloads/laws-of-the-game-2025-26-single-pages?l=en",
+  "official_documents_page": "https://www.theifab.com/documents/",
+  "access_date": "2026-06-13",
+  "source_pdf_filename": "Laws of the Game 2025_26_single pages.pdf",
+  "source_pdf_sha256": "48b81a71a1e02598ae88ae2332970c0f9e6a1e5b86c20a98d156ad28fbf2eae8",
+  "source_pdf_page_count": 230,
+  "chunks_file": "data/chunks.json",
+  "chunks_sha256": "d2748099aac77b204c7928ba0046c04a9038d8c9a5fff24fe256e46042f8d471",
+  "chunk_count": 267,
+  "indexed_page_range": [4, 217],
+  "ingestion_command": "python scripts/ingest.py 'Laws of the Game 2025_26_single pages.pdf'",
+  "copyright_notice": "The source booklet states it 'may not be reproduced or translated in whole or in part in any manner without the permission of The International Football Association Board.' This repository does not claim such permission. data/chunks.json is a derived, preprocessed research artifact created for an educational NLP project; it is not the official document and confers no rights. Rights remain with IFAB/FIFA.",
+  "usage_note": "The source PDF is NOT committed to this repository. To reproduce data/chunks.json, download the official PDF from official_source_url and run the ingestion_command. Verify source_pdf_sha256 matches if you want a byte-identical corpus.",
+  "license_status": "Not relicensed. See copyright_notice. The project team makes no legal determination about reuse; consult IFAB for permissions beyond educational/research use."
+}

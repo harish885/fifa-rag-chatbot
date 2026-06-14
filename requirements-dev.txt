@@ -1,0 +1,24 @@
+# Full development / reproducibility dependencies.
+# Installs the deployment set plus ingestion, notebook, test and audit tooling.
+#   python -m pip install -r requirements-dev.txt
+-r requirements.txt
+
+# Local server
+uvicorn>=0.30
+
+# Ingestion (PDF -> chunks.json)
+pymupdf>=1.24
+
+# Notebook + plots
+matplotlib>=3.8
+jupyter>=1.0
+nbconvert>=7.0
+ipykernel>=6.0
+
+# Tests
+pytest>=8.0
+pytest-asyncio>=0.23
+respx>=0.21
+
+# Dependency audit
+pip-audit>=2.7

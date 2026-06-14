@@ -1,0 +1,16 @@
+{
+  "name": "laws_heldout_v1",
+  "role": "held-out",
+  "created_by": "TODO: a group member who did NOT tune the synonym map",
+  "notes": "HELD-OUT TEMPLATE. Fill in below. This set must be frozen before evaluation and must never be used to edit retrieval rules or the synonym map. See eval/README.md for the protocol.",
+  "page_label_basis": "1-based PDF page index of 'Laws of the Game 2025_26_single pages.pdf' (== printed page number).",
+  "items": [
+    {
+      "question": "TODO: a natural-language rules question",
+      "gold_pages": [0],
+      "annotator": "TODO: primary annotator initials",
+      "second_annotator": "TODO: second annotator initials",
+      "label_agreement": "TODO: agree | disagree | resolved"
+    }
+  ]
+}
